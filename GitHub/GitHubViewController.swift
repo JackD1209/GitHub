@@ -18,6 +18,10 @@ class GitHubViewController: UIViewController {
     var repos: [GitHubModel]!
     @IBOutlet weak var gitHubTableView: UITableView!
     
+    let languageArray = ["Java", "JavaScript", "Objective-C", "Pythorn", "Ruby", "Swift"]
+    var isLanguageChecked = [true, true, true, true, true, true]
+    var starArray: [Int] = []
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -38,6 +42,10 @@ class GitHubViewController: UIViewController {
         GitHubModel.fetchRepos(searchSettings, successCallback: { (newRepos) -> Void in
             // Load data
             self.repos = newRepos
+            self.starArray.removeAll()
+            for star in self.repos {
+                self.starArray.append(star.stars)
+            }
             self.gitHubTableView.reloadData()
             refreshControl.endRefreshing()
         }, error: { (error) -> Void in
@@ -60,17 +68,34 @@ class GitHubViewController: UIViewController {
         GitHubModel.fetchRepos(searchSettings, successCallback: { (newRepos) -> Void in
             // Load data
             self.repos = newRepos
+            self.starArray.removeAll()
+            for star in self.repos {
+                self.starArray.append(star.stars)
+            }
             self.gitHubTableView.reloadData()
             MBProgressHUD.hide(for: self.view, animated: true)
         }, error: { (error) -> Void in
             print(error!)
         })
     }
+    
+    // Send default search data to settings screen
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "displaySettings" {
+            let settingsViewController = segue.destination as! GitHubSettingsViewController
+            settingsViewController.languageArray = self.languageArray
+            settingsViewController.isLanguageChecked = self.isLanguageChecked
+            settingsViewController.minStar = self.starArray.min()
+            settingsViewController.maxStar = self.starArray.max()
+            settingsViewController.delegate = self
+        }
+    }
 }
 
 extension GitHubViewController: GitHubSettingsDelegate {
-    func gitHubSettings(didUpdateSettings searchSettings: GitHubSearchSettings) {
+    func gitHubSettings(didUpdateSettings searchSettings: GitHubSearchSettings, languageChecked: [Bool]) {
         self.searchSettings = searchSettings
+        self.isLanguageChecked = languageChecked
     }
 }
 

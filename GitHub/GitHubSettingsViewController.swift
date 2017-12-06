@@ -9,7 +9,7 @@
 import UIKit
 
 protocol GitHubSettingsDelegate {
-    func gitHubSettings(didUpdateSettings searchSettings: GitHubSearchSettings)
+    func gitHubSettings(didUpdateSettings searchSettings: GitHubSearchSettings, languageChecked: [Bool])
 }
 
 class GitHubSettingsViewController: UIViewController {
@@ -17,8 +17,10 @@ class GitHubSettingsViewController: UIViewController {
     
     var searchSettings = GitHubSearchSettings()
     let sectionArray = ["Stars", "Languages"]
-    let languageArray = ["Java", "JavaScript", "Objective-C", "Pythorn", "Ruby", "Swift"]
-    var isLanguageChecked = [true, true, true, true, true, true]
+    var languageArray: [String] = []
+    var isLanguageChecked: [Bool] = []
+    var minStar: Int?
+    var maxStar: Int?
     var didLanguageSwitched = false
     var searchLanguage = ""
     var delegate: GitHubSettingsDelegate?
@@ -30,11 +32,11 @@ class GitHubSettingsViewController: UIViewController {
     @IBAction func saveButtonPressed(_ sender: Any) {
         for (index, language) in isLanguageChecked.enumerated() {
             if language {
-                searchLanguage += languageArray[index]
+                searchLanguage += languageArray[index] + " "
             }
         }
         self.searchSettings.language = searchLanguage
-        delegate?.gitHubSettings(didUpdateSettings: self.searchSettings)
+        delegate?.gitHubSettings(didUpdateSettings: self.searchSettings, languageChecked: self.isLanguageChecked)
         self.navigationController?.popViewController(animated: true)
     }
     
@@ -85,6 +87,8 @@ extension GitHubSettingsViewController: UITableViewDelegate, UITableViewDataSour
         switch indexPath.section {
         case 0:
             let starCell = tableView.dequeueReusableCell(withIdentifier: "StarCell") as! StarCell
+            starCell.slider.minimumValue = Float(self.minStar!)
+            starCell.slider.maximumValue = Float(self.maxStar!)
             starCell.delegate = self
             return starCell
         case 1:

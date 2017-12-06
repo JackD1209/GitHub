@@ -15,6 +15,7 @@ protocol StarCellDelegate {
 class StarCell: UITableViewCell {
 
     @IBOutlet weak var sliderValueLabel: UILabel!
+    @IBOutlet weak var slider: UISlider!
     var delegate: StarCellDelegate?
     
     override func awakeFromNib() {

@@ -156,7 +156,7 @@
                         <barButtonItem key="leftBarButtonItem" title="Settings" id="T6l-qC-2g1">
                             <connections>
                                 <action selector="settingButtonPressed:" destination="BYZ-38-t0r" id="KJe-Vk-ZiD"/>
-                                <segue destination="aJ3-RG-nMH" kind="push" id="iZr-rH-6ZC"/>
+                                <segue destination="aJ3-RG-nMH" kind="push" identifier="displaySettings" id="iZr-rH-6ZC"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
@@ -225,6 +225,7 @@
                                             </constraints>
                                         </tableViewCellContentView>
                                         <connections>
+                                            <outlet property="slider" destination="QeG-R4-YaM" id="Ulc-NG-Kkq"/>
                                             <outlet property="sliderValueLabel" destination="M3j-4c-wUs" id="dfZ-U6-xXf"/>
                                         </connections>
                                     </tableViewCell>
