@@ -10,11 +10,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "GitHub/GitHubViewController.swift"
-            timestampString = "534263646.331154"
+            timestampString = "536230163.954094"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "75"
-            endingLineNumber = "75"
+            startingLineNumber = "70"
+            endingLineNumber = "70"
             landmarkName = "doSearch()"
             landmarkType = "7">
          </BreakpointContent>
@@ -26,12 +26,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "GitHub/GitHubViewController.swift"
-            timestampString = "534263646.331229"
+            timestampString = "536230163.954606"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "99"
-            endingLineNumber = "99"
-            landmarkName = "gitHubSettings(didUpdateSettings:languageChecked:)"
+            startingLineNumber = "75"
+            endingLineNumber = "75"
+            landmarkName = "doSearch()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

@@ -17,7 +17,7 @@ class GitHubSettingsViewController: UIViewController {
     
     var searchSettings = GitHubSearchSettings()
     let sectionArray = ["Stars", "Languages"]
-    var languageArray: [String] = []
+    var languageArray: [String] = ["Java", "JavaScript", "Objective-C", "Pythorn", "Ruby", "Swift"]
     var isLanguageChecked: [Bool] = []
     var minStar: Int?
     var maxStar: Int?

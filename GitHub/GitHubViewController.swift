@@ -18,7 +18,6 @@ class GitHubViewController: UIViewController {
     var repos: [GitHubModel]!
     @IBOutlet weak var gitHubTableView: UITableView!
     
-    let languageArray = ["Java", "JavaScript", "Objective-C", "Pythorn", "Ruby", "Swift"]
     var isLanguageChecked = [true, true, true, true, true, true]
     var starArray: [Int] = []
     
@@ -32,6 +31,9 @@ class GitHubViewController: UIViewController {
         // Add SearchBar to the NavigationBar
         searchBar.sizeToFit()
         navigationItem.titleView = searchBar
+        
+        // Perform the first search when the view controller first loads
+        doSearch()
         
         // Add Pull to Refresh
         refreshControl.addTarget(self, action: #selector(refreshControlAction(_:)), for: UIControlEvents.valueChanged)
@@ -56,14 +58,12 @@ class GitHubViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        
-        // Perform the first search when the view controller first loads
-        doSearch()
     }
     
     // Perform the search.
     fileprivate func doSearch() {
         MBProgressHUD.showAdded(to: self.view, animated: true)
+        self.repos?.removeAll()
         // Perform request to GitHub API to get the list of repositories
         GitHubModel.fetchRepos(searchSettings, successCallback: { (newRepos) -> Void in
             // Load data
@@ -83,7 +83,6 @@ class GitHubViewController: UIViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "displaySettings" {
             let settingsViewController = segue.destination as! GitHubSettingsViewController
-            settingsViewController.languageArray = self.languageArray
             settingsViewController.isLanguageChecked = self.isLanguageChecked
             settingsViewController.minStar = self.starArray.min()
             settingsViewController.maxStar = self.starArray.max()
@@ -96,6 +95,7 @@ extension GitHubViewController: GitHubSettingsDelegate {
     func gitHubSettings(didUpdateSettings searchSettings: GitHubSearchSettings, languageChecked: [Bool]) {
         self.searchSettings = searchSettings
         self.isLanguageChecked = languageChecked
+        doSearch()
     }
 }
 
