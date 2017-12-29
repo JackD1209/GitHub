@@ -68,6 +68,25 @@ class GitHubViewController: UIViewController {
         GitHubModel.fetchRepos(searchSettings, successCallback: { (newRepos) -> Void in
             // Load data
             self.repos = newRepos
+            // Filter results with searchSettings
+            if self.searchSettings.searchString != nil {
+                self.repos = self.repos.filter { repo -> Bool in
+                    return repo.name.lowercased().contains(self.searchSettings.searchString!.lowercased())
+                }
+            }
+
+            if self.searchSettings.language != nil {
+                self.repos = self.repos.filter { repo -> Bool in
+                    return self.searchSettings.language!.lowercased().contains(repo.language.lowercased())
+                }
+            }
+            
+            if self.searchSettings.language != nil {
+                self.repos = self.repos.filter { repo -> Bool in
+                    return repo.stars >= self.searchSettings.minStars
+                }
+            }
+    
             self.starArray.removeAll()
             for star in self.repos {
                 self.starArray.append(star.stars)
@@ -84,8 +103,8 @@ class GitHubViewController: UIViewController {
         if segue.identifier == "displaySettings" {
             let settingsViewController = segue.destination as! GitHubSettingsViewController
             settingsViewController.isLanguageChecked = self.isLanguageChecked
-            settingsViewController.minStar = self.starArray.min()
-            settingsViewController.maxStar = self.starArray.max()
+            settingsViewController.minStar = self.starArray.min() ?? 0
+            settingsViewController.maxStar = self.starArray.max() ?? 0
             settingsViewController.delegate = self
         }
     }
